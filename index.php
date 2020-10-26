@@ -1,86 +1,60 @@
+<?php include "db_connect.php"; ?>
+<?php
+    session_start();
+    for($i=1;$i<=20;$i++)
+    {
+        $_SESSION["answer".$i]='';
+    }
+/*  $_SESSION["answer1"]='';
+    $_SESSION["answer2"]='';
+    $_SESSION["answer3"]='';
+    $_SESSION["answer4"]='';
+    $_SESSION["answer5"]='';
+    $_SESSION["answer6"]='';
+    $_SESSION["answer7"]='';
+    $_SESSION["answer8"]='';
+    $_SESSION["answer9"]='';
+    $_SESSION["answer10"]='';
+    $_SESSION["answer11"]='';
+    $_SESSION["answer12"]='';
+    $_SESSION["answer13"]='';
+    $_SESSION["answer14"]='';
+    $_SESSION["answer15"]='';
+    $_SESSION["answer16"]='';
+    $_SESSION["answer17"]='';
+    $_SESSION["answer18"]='';
+    $_SESSION["answer19"]='';
+    $_SESSION["answer20"]='';
+*/    
+?>
+<?php
+    if(isset($_SESSION["username"]))
+    {
+        $username=$_SESSION["username"];
+        $query=mysqli_query($connect,"SELECT quiz1 FROM details
+                                WHERE Username='$username'");
+        $record=$query->fetch_assoc();
+        if($record["quiz1"]==1)
+        {
+            header('Location:User_Profile.php');
+        }
+    }
+?>
+<?php
+    $res=mysqli_query($connect,"SELECT * FROM timer");
+    while($row=$res->fetch_assoc())
+    {
+        $duration=$row["duration"];
+    }
+$_SESSION["duration"]=$duration;
+$_SESSION["start_time"]=date("Y-m-d H:i:s");
 
-<?php 
+$end_time=date("Y-m-d H:i:s",strtotime('+'.$_SESSION["duration"].'minutes',strtotime($_SESSION["start_time"])));
 
-	$con = mysqli_connect('localhost','root');
-	if($con){
-		echo"connection";
-	}
-
-	mysqli_select_db($con,'quizdb');
+$_SESSION["end_time"]=$end_time;
 
 ?>
 
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	 <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
-<!-- 
-	 font-family: 'Montserrat', sans-serif; 
-	font-family: 'Open Sans', sans-serif;
-	-->
-
-</head>
-<body>
-
-	<div class="container">
-		<h1 class="text-center"> Welcome to Quiz World </h1><br>
-
-		<div class="row">
-			
-			<div class="col-lg-6">
-				<div class="card">
-					<h4 class="card-header text-center"> Login Form </h4>
-					<br>
-					<form action="login.php" method="post">
-						<div class="form-group">
-							<label for="user "> Username: </label>
-							<input type="text" name="user" id="user" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="pass "> Password: </label>
-							<input type="text" name="pass" id="pass" class="form-control">
-						</div>
-						<button class="btn btn-success d-block m-auto" type="submit"> Submit </button>
-					</form>
-				
-				</div>
-			</div>
-
-			<div class="col-lg-6">
-				<div class="card">
-					<h4 class="card-header text-center"> SignUp Form </h4>
-					<br>
-					<form action="registration.php" method="post">
-						<div class="form-group">
-							<label for="user "> Username: </label>
-							<input type="text" name="user" id="user" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="pass "> Password: </label>
-							<input type="text" name="pass" id="pass" class="form-control">
-						</div>
-						<button class="btn btn-success d-block m-auto" type="submit"> Submit </button>
-						<div class="duplicate"> </div>
-					</form>
-
-				</div>
-			</div>
-				</div>
-			</div>
-
-		</div>
-
-	</div>
-
-</body>
-</html>
+<script type="text/javascript">
+    window.location="question1_page.php";
+</script>
