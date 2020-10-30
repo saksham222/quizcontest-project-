@@ -1,33 +1,70 @@
-<?php
-session_start();
+ <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	 <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
+<!-- 
+	 font-family: 'Montserrat', sans-serif; 
+	font-family: 'Open Sans', sans-serif;
+	-->
 
-$con = mysqli_connect('localhost','root','lps');
-	if($con){
-		echo"connection";
-	}
+</head>
+<body style="background-color:orange;">
 
-	mysqli_select_db($con,'quizdb');
+	<div class="container">
+		<h1 class="text-center"> WELCOME TO SAKSHAM'S QUIZ </h1><br>
 
+		<div class="row">
+			
+			<div class="col-lg-6">
+				<div class="card">
+					<h4 class="card-header text-center"> Login Form </h4>
+					<br>
+					<form action="val.php" method="post">
+						<div class="form-group">
+							<label for="user "> Username: </label>
+							<input type="text" name="user" id="user" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="pass "> Password: </label>
+							<input type="text" name="pass" id="pass" class="form-control">
+						</div>
+						<button class="btn btn-success d-block m-auto" type="submit"> Submit </button>
+					</form>
+				
+				</div>
+			</div>
 
-	$username = $_POST['user'];
-	$password = $_POST['pass'];
+			<div class="col-lg-6">
+				<div class="card">
+					<h4 class="card-header text-center"> SignUp Form </h4>
+					<br>
+					<form action="reg.php" method="post">
+						<div class="form-group">
+							<label for="user "> Username: </label>
+							<input type="text" name="user" id="user" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="pass "> Password: </label>
+							<input type="text" name="pass" id="pass" class="form-control">
+						</div>
+						<button class="btn btn-success d-block m-auto" type="submit"> Submit </button>
+						<div class="duplicate"> </div>
+					</form>
 
-$q = " select * from quizregistration where user = '$username' && pass='$password' ";
+				</div>
+			</div>
+				</div>
+			</div>
 
-$result = mysqli_query($con,$q);
+		</div>
 
-$row = mysqli_num_rows($result);
+	</div>
 
-if($row == 1){
-	$_SESSION['username'] = $username;
-
-	$userquery = " insert into user(username) values ('$username')";
-	$userresult = mysqli_query($con,$userquery) ;
-
-	header('location:home.php');	
-}else{
-	header('location:index.php');
-}
-
-?>
+</body>
+</html>
