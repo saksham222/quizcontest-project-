@@ -1,97 +1,78 @@
-<!DOCTYPE HTML>
-<?php include "db_connect.php" ?>
-<?php
-    session_start();
-    $query=mysqli_query($connect,"SELECT * FROM quiz1
-                                    WHERE qNo=1");
-    $row=$query->fetch_assoc();
-?>
-<?php
-    if(!isset($_SESSION["username"]))
-    {
-        header('Location:User_Logout.php');
-    }
-?>
-
-<?php
-    $option1='';
-    $option2='';
-    $option3='';
-    $option4='';
-    if(isset($_POST["prev"]) && isset($_POST["answer"]))
-    {
-        $_SESSION["answer2"]=$_POST["answer"];
-    }
-    if($_SESSION["answer1"]!='')
-    {
-        switch($_SESSION["answer1"])
-        {
-            case $row['option1']:
-                $option1="checked";
-                break;
-            case $row['option2']:
-                $option2="checked";
-                break;
-            case $row['option3']:
-                $option3="checked";
-                break;
-            case $row['option4']:
-                $option4="checked";
-                
-        }
-        
-    }
-?>
+ <?php
+   session_start();
+   
+   if(!isset($_SESSION['username'])){
+   	 
+   }
+   
+   
+   $con = mysqli_connect('localhost','root');
+  
+   	mysqli_select_db($con,'players');
+   
+   ?>
+<!DOCTYPE html>
 <html>
-    <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="quiz_app.css">
-    <link rel="stylesheet" href="question_page_stylesheet.min.css">
+   <head>
+      <title></title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans" rel="stylesheet">
+       </head>
+   <body style="background-color:yellow;">
+      <div class="container">
+        <br> <h1 class="text-center text-primary" >  LETS START SAKSHAM'S QUIZ </h1><br>
+        <h2><class="text-center text-success"> <?php echo $_SESSION['username']; ?></h2><br>
+        <div class="col-lg-8 m-auto d-block>
+        <div class="card">
+                  <B><p class="card-header text-center" > <?php echo $_SESSION['username']; ?> YOU HAVE TO SELECT OUT OF 4. BEST OF LUCK <i class="fas fa-thumbs-up"></i>  </p></B>
+               </div>
+               <br>
+                <form action="checked.php" method="post">
+               <?php
+                      
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      
-    </head>
-    <body>
-        <div id="header"><span id="header-content"><b>QUIZ NAME</b></span></div>
-			
-        <div id="timer"></div>
-        <span id="book-mark">&nbsp;</span>
-        <div id="question"><?php echo $row["qNo"].".".$row["question"] ?></div>
+                     $sql1 = "SELECT * FROM question where qid=1";
+                        $result1 = mysqli_query($con, $sql1);
+                            
+                                       while($rows = mysqli_fetch_array($result1)) {
+                        ?> 
+                         <div class="card"> <h4 class="card-header"> <?php echo $rows['question']; ?> </h4>
+                         <?php
+$sql1 = "SELECT * FROM answer where ansid=1";
+                        $result1 = mysqli_query($con, $sql1);
+                            
+                                       while($rows = mysqli_fetch_array($result1)) {
+                        ?> 
+                        <div class="card-body">
+                           <input type="radio" name="quizcheck[] " value="<?php  $rows['aid'] ?>" > 
+                           <?php echo $rows['answer']; ?>
+                        </div>
+
+                         
+                         <?php
+                            }
+                         }
+                            ?>
+                            <br>
+                  <a href="h2.php" class="btn btn-primary d-block m-auto text-white" > Next Question </a> 
+                         </form>
+                         </div> 
+                         </div>
+                         <br>
+                         <br>
+                         <script type="text/javascript" src="timerscript.js"></script>
+
+        <a href="l.php" class="btn btn-primary d-block m-auto text-white" > Logout </a> 
+
+
+         </div>
+
+
         
-        <form class="form-horizontal" role="form" name="optionForm" id="option-form" method="post">
-            <div id="option1" class="option" onclick="selectOption(this)">
-                <input id="radio1" type="radio" name="answer" value="<?php echo $row["option1"] ?>" <?php echo $option1; ?>>&nbsp;<?php echo $row["option1"] ?>
-            </div>
-            
-            <div id="option2" class="option" onclick="selectOption(this)">
-                <input id="radio2" type="radio" name="answer" value="<?php echo $row["option2"] ?>" <?php echo $option2; ?>>&nbsp;<?php echo $row["option2"] ?>
-            </div>
-            
-            <div id="option3" class="option" onclick="selectOption(this)">
-                <input id="radio3" type="radio" name="answer" value="<?php echo $row["option3"] ?>" <?php echo $option3; ?>>&nbsp;<?php echo $row["option3"] ?>
-            </div>
-            
-            <div id="option4" class="option" onclick="selectOption(this)">
-                <input id="radio4" type="radio" name="answer" value="<?php echo $row["option4"] ?>" <?php echo $option4; ?>>&nbsp;<?php echo $row["option4"] ?>
-            </div>
-            
-            <div>
-                <input type="submit" name="questions1" class="button" value="Questions" formaction="questions.php">
-                <input type="submit" name="next" class="button" value="Next" formaction="question2_page.php">
-                <input type="submit" name="submit1" class="button" value="Submit" formaction="result.php">
-            </div>
-            
-        </form>
-        <div id="ans" style="position:relative;left:20%"></div>
         
-        <br><br><br>
-        <script src="question_page_script.js"></script>
-        <script type="text/javascript" src="timer_script.js"></script>
-		
-	</body>
+
+   </body>
 </html>
