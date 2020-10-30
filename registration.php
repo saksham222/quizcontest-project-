@@ -1,14 +1,14 @@
-<?php
+ <?php
 
 session_start();
-header('location:index.php');
+header('location:login.php');
 
 $con = mysqli_connect('localhost','root');
 	if($con){
 		echo"connection";
 	}
 
-	mysqli_select_db($con,'quizdb');
+	mysqli_select_db($con,'players');
 
 
 	$username = $_POST['user'];
@@ -18,7 +18,7 @@ $con = mysqli_connect('localhost','root');
 	// echo $username;
 	// echo $password;
 
-	$check = "select * from quizregistration where user='$username' && pass='$password' ";
+	$check = "select * from detail where name='$username' && password='$password' ";
 	$resultcheck = mysqli_query($con,$check);	
 
 	 $row = mysqli_num_rows($resultcheck);
@@ -27,7 +27,7 @@ $con = mysqli_connect('localhost','root');
 				
 			}	else{
 
-				$q = "insert into quizregistration(user, pass) values ('$username', '$password')"  ;
+				$q = "insert into detail(name, password) values ('$username', '$password')"  ;
 
 				$result = mysqli_query($con,$q);
 
